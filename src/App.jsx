@@ -1,14 +1,17 @@
-import { useState } from 'react'
-import Products from './components/Products'
+import './App.css'
+import { Link, Outlet } from 'react-router-dom';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    <Products />
-    </>
-  )
+    <div className="App">
+      <nav>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/about"}>About</Link>
+        <Link to={"/products"}>Products</Link>
+      </nav>
+      <Outlet />
+    </div>
+  );
 }
 
 export default App
