@@ -20,11 +20,11 @@ export default function Products() {
 
     const columns = [
         {field: 'name', sortable: true, filter: true},
-        {field: 'description', sortable: true, filter: true},
-        {field: 'type', sortable: true, filter: true},
+        {field: 'type.type_name', headerName: 'Type', sortable: true, filter: true},
         {field: 'color', sortable: true, filter: true},
         {field: 'size', sortable: true, filter: true},
-        {field: 'price', sortable: true, filter: true}
+        {field: 'price', sortable: true, filter: true},
+        {field: 'manufacturer.name', headerName: 'Manufacturer', sortable: true, filter: true}
     ];
 
     return (
