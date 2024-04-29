@@ -5,6 +5,7 @@ import './index.css'
 import Home from './components/Home.jsx'
 import About from './components/About.jsx'
 import Products from './components/Products.jsx'
+import Manufacturers from './components/Manufacturers.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([  // Import components that are used in rout
       {
         path: "/Products",
         element: <Products />,
+      },
+      {
+        path: "/Manufacturers",
+        element: <Manufacturers />,
       },
     ]
   }
