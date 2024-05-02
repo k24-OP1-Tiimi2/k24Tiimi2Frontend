@@ -6,8 +6,35 @@ const ReserveButton = () => {
         const customerEmail = prompt('Enter your email:');
         const customerPhone = prompt('Enter your phone number:');
 
-        alert(customerName + ' ' + customerEmail + ' ' + customerPhone);
+        const reservation = {
+            name: customerName,
+            email: customerEmail,
+            phoneNum: customerPhone
+        };
+
+        // Send the reservation data to the backend
+    fetch('localhost:8080/orderlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reservation)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to submit reservation');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Reservation submitted successfully!');
+        console.log(data); // Log any response from the backend
+      })
+      .catch(error => {
+        alert('Failed to submit reservation: ' + error.message);
+      });
     };
+
 
   return (
     <button onClick={handleButtonClick}>Reserve</button>
