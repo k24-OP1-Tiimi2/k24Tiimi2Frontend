@@ -4,10 +4,15 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { AppBar, Toolbar, Typography } from '@mui/material';
+import ReserveButton from "./ReserveButton";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
     const gridRef = useRef();
+
+    function ReserveButtonRenderer(params) {
+        return <ReserveButton data={params.data} />;
+      }
 
     useEffect(() => getProducts(), []);
 
@@ -24,7 +29,8 @@ export default function Products() {
         {field: 'color', sortable: true, filter: true, flex: 1},
         {field: 'size', sortable: true, filter: true, flex: 1},
         {field: 'price', sortable: true, filter: true, flex: 1},
-        {field: 'manufacturer.name', headerName: 'Manufacturer', sortable: true, filter: true, flex: 1}
+        {field: 'manufacturer.name', headerName: 'Manufacturer', sortable: true, filter: true, flex: 1},
+        {headerName: 'Reserve', cellRenderer: ReserveButtonRenderer, flex: 1, cellStyle: {'background-color': 'cornflowerblue', 'color':'white'}}
     ];
 
     return (
