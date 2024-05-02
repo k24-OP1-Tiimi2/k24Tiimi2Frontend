@@ -29,11 +29,11 @@ export default function Products() {
 
     return (
         <>
-        <div className="ag-theme-material" style={{width: '100%', height: '100%'}}>
+        <div className="ag-theme-material" style={{width: '100%', height: '80vh'}}>
         <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6'>
-            ProductList
+            Products
           </Typography>
         </Toolbar>
       </AppBar>

@@ -36,11 +36,11 @@ export default function Manufacturers() {
 
     return (
         <>
-        <div className="ag-theme-material" style={{width: '100%', height: '100%'}}>
+        <div className="ag-theme-material" style={{width: '100%', height: '80vh'}}>
         <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6'>
-            Manufacturer List
+            Manufacturers
           </Typography>
         </Toolbar>
       </AppBar>
@@ -49,7 +49,7 @@ export default function Manufacturers() {
                 columnDefs={columns}
                 rowData={manufacturers}
                 pagination={true}
-                paginationPageSize={10}
+                paginationPageSize={20}
             />
         </div>
         </>
