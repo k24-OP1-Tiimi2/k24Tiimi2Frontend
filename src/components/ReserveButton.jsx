@@ -13,7 +13,7 @@ const ReserveButton = () => {
         };
 
         // Send the reservation data to the backend
-    fetch('localhost:8080/orderlist', {
+    fetch('localhost:8080/reservations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
