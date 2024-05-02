@@ -19,12 +19,12 @@ export default function Products() {
     }
 
     const columns = [
-        {field: 'name', sortable: true, filter: true},
-        {field: 'type.type_name', headerName: 'Type', sortable: true, filter: true},
-        {field: 'color', sortable: true, filter: true},
-        {field: 'size', sortable: true, filter: true},
-        {field: 'price', sortable: true, filter: true},
-        {field: 'manufacturer.name', headerName: 'Manufacturer', sortable: true, filter: true}
+        {field: 'name', sortable: true, filter: true, flex: 1},
+        {field: 'type.type_name', headerName: 'Type', sortable: true, filter: true, flex: 1},
+        {field: 'color', sortable: true, filter: true, flex: 1},
+        {field: 'size', sortable: true, filter: true, flex: 1},
+        {field: 'price', sortable: true, filter: true, flex: 1},
+        {field: 'manufacturer.name', headerName: 'Manufacturer', sortable: true, filter: true, flex: 1}
     ];
 
     return (
