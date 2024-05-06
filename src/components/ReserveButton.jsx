@@ -11,7 +11,6 @@ const ReserveButton = () => {
       email: customerEmail,
       phoneNum: customerPhone
     };
-
     // Send the reservation data to the backend
     fetch('http://localhost:8080/reservations', {
       method: 'POST',
