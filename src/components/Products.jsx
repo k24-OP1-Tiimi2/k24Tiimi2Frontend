@@ -11,7 +11,7 @@ export default function Products() {
   const gridRef = useRef();
 
   function ReserveButtonRenderer(params) {
-    return <ReserveButton data={params.data} />;
+    return <ReserveButton data={params.data} onReservationSubmit={handleReservationSubmit} />;
   }
 
   useEffect(() => getProducts(), []);
@@ -22,13 +22,34 @@ export default function Products() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json'
       }
     })
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(err => console.error(err))
   }
+  const handleReservationSubmit = (reservation) => {
+    fetch('http://localhost:8080/reservations', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reservation)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to submit reservation');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Reservation submitted successfully!');
+        console.log(data);
+    })
+    .catch(error => {
+        alert('Failed to submit reservation: ' + error.message);
+    });
+};
 
   const columns = [
     { field: 'name', sortable: true, filter: true, flex: 1 },
