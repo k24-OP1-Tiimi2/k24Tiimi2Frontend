@@ -12,7 +12,12 @@ export default function Manufacturers() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/manufacturers');
+                const response = await fetch('http://localhost:8080/manufacturers',{
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    }});
                 const data = await response.json();
                 setManufacturers(data);
             } catch (error) {
