@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -13,11 +13,27 @@ export default function Products() {
   useEffect(() => getProducts(), []);
 
     
-    const getProducts = () => {
-      fetch('http://localhost:8080/api/products')
-          .then(response => response.json())
-          .then(data => setProducts(data._embedded.products))
-          .catch(err => console.error(err))
+  const getProducts = () => {
+    fetch('http://localhost:8080/api/products')
+      .then(response => response.json())
+      .then(data => {
+        // Fetch type and manufacturer for each product
+        const promises = data._embedded.products.map(product => {
+          return Promise.all([
+            fetch(product._links.type.href).then(res => res.json()),
+            fetch(product._links.manufacturer.href).then(res => res.json())
+          ]).then(([typeData, manufacturerData]) => {
+            return { ...product, type: typeData, manufacturer: manufacturerData };
+          });
+        });
+
+        // Wait for all promises to resolve
+        return Promise.all(promises);
+      })
+      .then(productsWithData => {
+        setProducts(productsWithData);
+      })
+      .catch(err => console.error(err));
   }
 
 
