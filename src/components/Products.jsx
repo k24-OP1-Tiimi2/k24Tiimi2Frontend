@@ -4,62 +4,54 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { AppBar, Toolbar, Typography } from '@mui/material';
-import ReserveButton from "./ReserveButton";
+import Addorder from "./Addorder";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-  const gridRef = useRef();
 
-  function ReserveButtonRenderer(params) {
-    return <ReserveButton data={params.data} onReservationSubmit={handleReservationSubmit} />;
-  }
 
   useEffect(() => getProducts(), []);
 
-  const getProducts = () => {
-    fetch('http://localhost:8080/products', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(err => console.error(err))
+    
+    const getProducts = () => {
+      fetch('http://localhost:8080/api/products')
+          .then(response => response.json())
+          .then(data => setProducts(data._embedded.products))
+          .catch(err => console.error(err))
   }
-  const handleReservationSubmit = (reservation) => {
-    fetch('http://localhost:8080/reservations', {
+
+
+  const saveOrderForCustomer = (order, productLink) => {
+    let orderWithCustomer = { ...order, product: productLink }
+    fetch('http://localhost:8080/api/orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(reservation)
+        body: JSON.stringify(orderWithCustomer)
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to submit reservation');
+        if (response.ok) {
+            return response.json();
         }
-        return response.json();
+        throw new Error('Failed to save order');
     })
     .then(data => {
-        alert('Reservation submitted successfully!');
-        console.log(data);
+        // Order saved successfully, now fetch products again
+        return getProducts();
     })
-    .catch(error => {
-        alert('Failed to submit reservation: ' + error.message);
-    });
-};
+    .catch(err => console.error(err))
+}
 
-  const columns = [
+const [columnDefs, setColumnDefs] = useState([
     { field: 'name', sortable: true, filter: true, flex: 1 },
     { field: 'type.type_name', headerName: 'Type', sortable: true, filter: true, flex: 1 },
     { field: 'color', sortable: true, filter: true, flex: 1 },
     { field: 'size', sortable: true, filter: true, flex: 1 },
     { field: 'price', sortable: true, filter: true, flex: 1 },
     { field: 'manufacturer.name', headerName: 'Manufacturer', sortable: true, filter: true, flex: 1 },
-    { headerName: 'Reserve', cellRenderer: ReserveButtonRenderer, flex: 1, cellStyle: { 'backgroundColor': 'cornflowerblue', 'color': 'white' } }
-  ];
+    { cellRenderer: (params) => <Addorder saveOrder={saveOrderForCustomer} params={params} />, },
+  ]);
 
   return (
     <>
@@ -72,8 +64,7 @@ export default function Products() {
           </Toolbar>
         </AppBar>
         <AgGridReact
-          ref={gridRef}
-          columnDefs={columns}
+          columnDefs={columnDefs}
           rowData={products}
           pagination={true}
           paginationPageSize={10}
