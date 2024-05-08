@@ -13,21 +13,64 @@ export default function Addorder(props) {
         name: '', email: '', phone: ''
     })
 
+    const [errors, setErrors] = useState({});
+
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
+
+        setErrors({});
+    };
+
+    const validateEmail = (email) => {
+        
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        return emailRegex.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        
+        const phoneRegex = /^\d{10}$/;
+        return phoneRegex.test(phone);
     };
 
     const handleInputChange = (event) => {
-        setOrder({ ...order, [event.target.name]: event.target.value });
+        const { name, value } = event.target;
+        let newErrors = { ...errors };
+
+        // Validate email format
+        if (name === 'email' && !validateEmail(value)) {
+            newErrors.email = 'Invalid email format';
+            
+        } else {
+            delete newErrors.email;
+        }
+
+        // Validate phone format
+        if (name === 'phone' && !validatePhone(value)) {
+            newErrors.phone = 'Invalid phone number (10 digits)';
+            
+        } else {
+            delete newErrors.phone;
+        }
+
+        // Update order state and errors state
+        setOrder({ ...order, [name]: value });
+        setErrors(newErrors);
     };
 
     const addOrder = () => {
-        props.saveOrder(order, props.params.data._links.self.href);
-        handleClose();
+        // Check if there are any validation errors before saving the order
+        if (Object.keys(errors).length === 0) {
+            props.saveOrder(order, props.params.data._links.self.href);
+            handleClose();
+        } else {
+            alert('Invalid order information! Please check email and phone number')
+        }
     };
 
     return (
@@ -43,6 +86,7 @@ export default function Addorder(props) {
                         value={order.name}
                         onChange={handleInputChange}
                         label="Name"
+                        placeholder='John Doe'
                         fullWidth
                     />
                     <TextField
@@ -52,6 +96,7 @@ export default function Addorder(props) {
                         value={order.email}
                         onChange={handleInputChange}
                         label="Email"
+                        placeholder='john.doe@mail.com'
                         fullWidth
                     />
                     <TextField
@@ -61,6 +106,7 @@ export default function Addorder(props) {
                         value={order.phone}
                         onChange={handleInputChange}
                         label="Phone"
+                        placeholder='0501231234'
                         fullWidth
                     />
                 </DialogContent>
