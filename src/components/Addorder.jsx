@@ -38,6 +38,8 @@ export default function Addorder(props) {
         return phoneRegex.test(phone);
     };
 
+
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         let newErrors = { ...errors };
@@ -49,6 +51,7 @@ export default function Addorder(props) {
         } else {
             delete newErrors.email;
         }
+
 
         // Validate phone format
         if (name === 'phone' && !validatePhone(value)) {
