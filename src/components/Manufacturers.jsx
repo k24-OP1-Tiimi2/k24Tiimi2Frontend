@@ -12,7 +12,7 @@ export default function Manufacturers() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/manufacturers',{
+                const response = await fetch('https://dogstorebackend.onrender.com/manufacturers',{
                     method: 'GET',
                     credentials: 'include',
                     headers: {

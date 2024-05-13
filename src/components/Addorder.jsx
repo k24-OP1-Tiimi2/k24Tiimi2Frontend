@@ -44,7 +44,6 @@ export default function Addorder(props) {
         const { name, value } = event.target;
         let newErrors = { ...errors };
 
-        // Validate email format
         if (name === 'email' && !validateEmail(value)) {
             newErrors.email = 'Invalid email format';
             
@@ -53,7 +52,6 @@ export default function Addorder(props) {
         }
 
 
-        // Validate phone format
         if (name === 'phone' && !validatePhone(value)) {
             newErrors.phone = 'Invalid phone number (10 digits)';
             
@@ -61,13 +59,11 @@ export default function Addorder(props) {
             delete newErrors.phone;
         }
 
-        // Update order state and errors state
         setOrder({ ...order, [name]: value });
         setErrors(newErrors);
     };
 
     const addOrder = () => {
-        // Check if there are any validation errors before saving the order
         if (Object.keys(errors).length === 0) {
             props.saveOrder(order, props.params.data._links.self.href);
             handleClose();
